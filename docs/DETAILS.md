@@ -2398,3 +2398,11 @@ Runtime measurements used SM89. CUDA 13.3 compilation was checked for the SM120/
 adapter, but Blackwell runtime testing is still needed. HIP and SYCL were not built here; the CUDA library
 is excluded on those backends. This experimental opt-in changes floating-point accumulation and can change
 outputs. Prefill gains do not guarantee faster generation; some measured long-response TG runs regressed.
+
+### Expert upload group size (strata-poly)
+
+`STRATA_POLY_CHUNK_STAGE_MIB=64` targets 64 MiB groups when packing experts for prompt uploads, so an
+upload can start while workers pack the next group. Unset or 0 keeps stock grouping. Targets are integers
+from 1 to 512; invalid values warn once at initialization and fall back to stock staging. The setting is read at initialization and can also
+be supplied through the model's `env` map. Groups contain whole experts and fit the existing pinned buffer;
+experts larger than the target retain stock grouping. Host/GPU allocations and background uploads are unchanged.
