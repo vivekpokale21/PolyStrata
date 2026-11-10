@@ -1,7 +1,8 @@
-#include "q35_scratch_arena.hpp"
 // src/poly/qwen35.cpp - the layers of Qwen3.5 and Qwen3.6 with routed experts.  The reference for the math is
 // llama.cpp's qwen35moe graph.
 #include "qwen35.hpp"
+
+#include "q35_scratch_arena.hpp"
 
 #include "fattn.hpp"
 

@@ -2464,9 +2464,7 @@ buffers on CUDA/HIP. Members within each family remain disjoint; shared score
 storage, quantization work, persistent state and expert scratch remain separate.
 Metal keeps its existing allocation policy. No new user setting is required.
 
-On the historical CUDA/SM89 Tiel-Coder build at prompt batch 2048, this saved
-188.375 MiB logically (188 MiB observed allocation granularity). Savings scale
-with model geometry and batch size. Extra capacity can hold more GPU experts,
-but does not guarantee faster prompt processing or generation. Historical
-correctness and mixed timing results do not validate the updated source; fresh
-backend and model checks are required before merging this proposal.
+On Tiel-Coder at prompt batch 2048, CUDA/SM89 tests of the allocation prototype
+saved 188.375 MiB logically (188 MiB observed allocation granularity). Savings
+scale with model geometry and batch size. Extra capacity can hold more GPU
+experts, but does not guarantee faster prompt processing or generation.
