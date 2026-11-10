@@ -2456,3 +2456,17 @@ More classes than `8,16,32` gained nothing measurable. The gain depends on how u
 number of tokens in a batch, the number of experts, how many are cached in VRAM and the card's tile table; a
 card with a different MMQ tile table (`mmq-config-*.cuh`) may gain more, less or nothing. Only gfx1010 was
 measured.
+
+## Qwen35 temporary storage
+
+Qwen35 shares one aligned arena between recurrent and full-attention temporary
+buffers on CUDA/HIP. Members within each family remain disjoint; shared score
+storage, quantization work, persistent state and expert scratch remain separate.
+Metal keeps its existing allocation policy. No new user setting is required.
+
+On the historical CUDA/SM89 Tiel-Coder build at prompt batch 2048, this saved
+188.375 MiB logically (188 MiB observed allocation granularity). Savings scale
+with model geometry and batch size. Extra capacity can hold more GPU experts,
+but does not guarantee faster prompt processing or generation. Historical
+correctness and mixed timing results do not validate the updated source; fresh
+backend and model checks are required before merging this proposal.
